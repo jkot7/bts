@@ -1,0 +1,99 @@
+#include <xc.h> // Include controller-specific header
+
+#define _XTAL_FREQ 8000000 // Set according to your crystal frequency
+
+// Configuration bit settings
+#pragma config FOSC = HS         // High-Speed Oscillator
+#pragma config WDT = OFF         // Disable Watchdog Timer
+#pragma config LVP = OFF         // Disable Low-Voltage Programming
+#pragma config PBADEN = OFF      // Disable PORTB analog inputs
+
+// Declarations
+#define LCD_DATA PORTD           // LCD data port
+#define ctrl PORTE               // LCD control port
+#define rs PORTEbits.RE0         // Register select
+#define rw PORTEbits.RE1         // Read/write
+#define en PORTEbits.RE2         // Enable
+
+// Function Prototypes
+void init_LCD(void);                     // Initialize LCD
+void LCD_command(unsigned char cmd);     // Send command to LCD
+void LCD_data(unsigned char data);       // Send data to LCD
+void LCD_write_string(char *str);        // Write string to LCD
+void msdelay(unsigned int time);         // Delay function
+
+// Start of Main Program
+void main(void)
+{
+    char var1[] = " Wel-Come";         // Message for first line
+    char var2[] = "Smart Logic Tech";  // Message for second line
+
+    ADCON1 = 0x0F;     // Set PORTE as digital I/O
+    TRISD = 0x00;      // Set PORTD as output
+    TRISE = 0x00;      // Set PORTE as output
+
+    init_LCD();        // Initialize LCD
+    msdelay(50);       // Short delay
+
+    LCD_write_string(var1);    // Display message on first line
+    msdelay(15);
+    LCD_command(0xC0);         // Move cursor to second line
+    LCD_write_string(var2);    // Display message on second line
+
+    while (1); // Infinite loop
+}
+
+// Delay Function
+void msdelay(unsigned int time)
+{
+    unsigned int i, j;
+    for (i = 0; i < time; i++)
+        for (j = 0; j < 710; j++); // Calibrated loop for ~1ms
+}
+
+// LCD Initialization
+void init_LCD(void)
+{
+    LCD_command(0x38); // Initialize LCD in 8-bit mode
+    msdelay(15);
+    LCD_command(0x01); // Clear display
+    msdelay(15);
+    LCD_command(0x0C); // Display ON, cursor OFF
+    msdelay(15);
+    LCD_command(0x80); // Move cursor to first line
+    msdelay(15);
+}
+
+// Send Command to LCD
+void LCD_command(unsigned char cmd)
+{
+    LCD_DATA = cmd;
+    rs = 0;
+    rw = 0;
+    en = 1;
+    msdelay(15);
+    en = 0;
+}
+
+// Send Data to LCD
+void LCD_data(unsigned char data)
+{
+    LCD_DATA = data;
+    rs = 1;
+    rw = 0;
+    en = 1;
+    msdelay(15);
+    en = 0;
+}
+
+// Write String to LCD
+void LCD_write_string(char *str)
+{
+    int i = 0;
+    while (str[i] != '\0')
+    {
+        LCD_data(str[i]);
+        msdelay(15);
+        i++;
+    }
+}

@@ -1,0 +1,15 @@
+
+
+#include <xc.h>
+
+void main(void) {
+int source1[] = { 0x21,0x22, 0x23, 0x24, 0x25 };
+int dest[] = {0x00, 0x00,0x00,0x00,0x00};
+int i;
+for(i=0;i<5;i++)
+{
+dest[i] = source1[i];
+}
+
+return;
+}

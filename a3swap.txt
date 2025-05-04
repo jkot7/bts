@@ -1,0 +1,14 @@
+#include <xc.h>
+
+void main(void) {
+    int source1[] = {1, 2, 3, 4, 5};
+    int dest[] = {6, 7, 5, 4, 3};
+    
+    for (int i = 0; i < 5; i++) {
+        int temp = source1[i];
+        source1[i] = dest[i];
+        dest[i] = temp;
+    }
+
+    while (1);  
+}

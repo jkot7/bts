@@ -1,0 +1,19 @@
+
+#include <xc.h>
+
+void main(void) {
+    unsigned char num1,num2;
+    unsigned int quotient;
+    
+    num1=24;
+    num2=12;
+    
+    quotient=num1/num2;
+    
+    TRISD = 0x00; // Set PORTD as output
+
+    PORTD=quotient;
+    
+    return;
+}
+
