@@ -1,0 +1,22 @@
+#include <xc.h> //Include Controller specific .h
+void T0Delay(void);
+void main(void)
+{
+    TRISB=0; //configure Port B as output
+    while(1)
+    {
+        PORTB=0xFF; //load Bit Pattern
+        T0Delay();
+        PORTB=0x00;
+        T0Delay();
+    }
+}
+void T0Delay()
+{
+    T0CON=0x07; //Timer0, 8bit, 256 pre-scaler
+    TMR0L=0x00; //Load count to TMR0L
+    T0CONbits.TMR0ON=1; //start the timer for up count
+    while(INTCONbits.TMR0IF==0); //Check for overflow
+    T0CONbits.TMR0ON=0; //Turn off timer
+    INTCONbits.TMR0IF=0; //clear the Timer0 flag
+}
