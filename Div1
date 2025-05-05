@@ -1,0 +1,35 @@
+void main()
+
+{
+
+ unsigned char num1, num2;
+
+ unsigned char quotient = 0;
+
+ 
+
+ // Get input from user
+
+ num1 = 0x78; // input value
+
+ num2 = 0x12; // input value
+
+ 
+
+ // Perform division using successive subtraction
+
+ while(num1 >= num2)
+
+ {
+
+ num1 -= num2;
+
+ quotient++;
+
+ }
+
+ 
+
+ // Display quotient
+
+ PORTD = qu
