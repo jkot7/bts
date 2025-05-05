@@ -1,0 +1,20 @@
+void main()
+{
+ unsigned char num1, num2;
+ unsigned int result = 0;
+ unsigned char i;
+ 
+ // Get input from user
+ num1 = 0x12; // Example input value
+ num2 = 0x34; // Example input value
+ 
+ // Perform multiplication using successive addition
+ for(i = 0; i < num2; i++)
+ {
+ result += num1;
+ }
+ 
+ // Display result
+ PORTD = (unsigned char) result;
+ PORTC = (unsigned char) (result >> 8);
+}
